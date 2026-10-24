@@ -1,5 +1,47 @@
 # Build changelog
 
+## 2026-10-24 — Focused frontend flow and hosted-check tooling
+
+- Stored the user-supplied TinyFish credential only in `apps/worker/.env`, with
+  owner-only file permissions. It is ignored by Git and not copied into browser
+  configuration, templates, docs, or source. Its presence is checked without
+  printing the value; API authentication has not yet been exercised.
+- Later received Gemini and database credentials and appended them only to
+  that ignored worker file, without displaying or reading existing env content.
+  Generated matching local worker-signing secrets in the ignored web/worker
+  environments. No credential values are included in this changelog or source.
+- Replaced the marketing landing page with a direct workspace shell. Removed
+  the hero, slogans, method explorer, principles section, and repeated CTAs.
+- Added separate input/review steps, an explicit future report/answer step,
+  check/question/history navigation, preserved in-tab drafts, Edit/Back actions,
+  empty-input guards, and an honest unavailable-live-check state.
+- Simplified explanations into a compact checks panel and Help dialog. Kept
+  the brand palette, keyboard controls, mobile Sheet navigation, heading focus
+  management, and reduced-motion support.
+- Extracted document validation and added boundary tests for PDF/BibTeX sizes,
+  empty files, extension casing, and unsupported/double extensions.
+- Added `pnpm check:setup` for secret-safe configuration presence reporting and
+  `pnpm check:hosted` for real hosted readiness/RLS SQL execution over TLS. The
+  optional admin DB URL remains local; psycopg is development-only. The checker
+  executes the existing rollback-scoped tests and does not apply migrations.
+- M1 hosted verification remains pending: the hosted Supabase project URL/API
+  keys and Clerk setup are still needed. The user's Clerk checklist requires
+  confirmation before changes; their selected existing application will be
+  preserved. TinyFish calls must pass through the gateway with usage
+  logging; M2/provider implementation is not bypassed by the new credential.
+  No paid Agent calls or fabricated verification results were introduced.
+
+### Validation
+
+- Browser walkthrough passed for text input → Review → Edit/Back; question
+  review; navigation between views without losing the reference draft; Help
+  dismissal with Escape; and mobile menu focus/selection at 375px.
+- Checked the primary review action remains visible in a 1280×720 desktop
+  viewport; removed the temporary mobile QA route before building.
+- Input boundary tests, SQL/RLS tests, web build/lint/TypeScript/Prettier, and
+  worker Ruff checks pass. Hosted setup commands correctly report incomplete
+  configuration with exit code 2; this is not a claimed hosted test pass.
+
 ## 2026-10-24 — M1 Supabase implementation; hosted verification pending
 
 - Pushed the initial project, redesigned frontend, Docker-free setup, and judge

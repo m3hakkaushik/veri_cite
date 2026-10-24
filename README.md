@@ -78,3 +78,8 @@ The Supabase schema, RLS, private uploads, and Realtime migrations are in
 Docker-free database tests; see [hosted setup](supabase/README.md) before
 applying the SQL to your project. Server, browser, and worker clients are
 prepared, but the hosted integration is not claimed verified until configured.
+
+`pnpm check:setup` lists missing configuration names without exposing values.
+`pnpm check:hosted` runs the hosted SQL checks after you configure the optional
+admin connection in the ignored worker environment. `pnpm test:inputs` covers
+document type and size boundaries.

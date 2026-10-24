@@ -2,36 +2,34 @@
 
 Brand tokens: [11-brand-guidelines.md](11-brand-guidelines.md). Reference mock-up: deck slide "The Trust Report" (Figure 1.0).
 
-## 0. Frontend redesign — 24 October 2026
+## 0. Current frontend — focused workspace (24 October 2026)
 
-The user explicitly requested a complete frontend redesign after the M0 preview.
-That request supersedes the original landing-page composition below. The current
-public frontend uses an editorial research-desk layout while retaining the
-documented palette, Inter/Plex fonts, bracket-check mark, and evidence rules.
+The user asked to remove the long marketing copy and give the application a
+clearer flow. This supersedes both earlier landing compositions below.
 
-- Sticky navigation: Workspace, The method, Our principles, Start exploring;
-  accessible Sheet navigation on mobile, with focus transferred to the target
-  heading after closing.
-- Hero: "Bold ideas. Solid evidence.", a citation-to-source illustration made
-  from SVG/CSS, two working navigation actions, and a TinyFish attribution strip.
-- Inline workspace: Document (PDF/.bib), Paste text, Ask a question. Supports
-  local file selection/drop, type/empty-file/size validation, text limits,
-  character and word counts, examples, clearing, and a draft review dialog.
-- Workspace limits: PDF 20 MB, .bib 2 MB, pasted text 60,000 characters, question
-  500 characters. Selected input remains in tab memory; no uploads or storage.
-- The method: four keyboard-accessible tabs, each with an explanation and a
-  source-connection diagram. These illustrate the planned checks; they do not
-  show simulated verification outcomes. Current remains labelled planned.
-- Principles: quote validation, inspectable sources, visible uncertainty, and
-  the current preview's local-input privacy behavior.
-- Motion: short entrance and tab transitions, hover feedback, optional
-  below-fold reveals, and reduced-motion support. All content is visible with
-  JavaScript disabled.
+- `/` opens a public, local workspace preview with a Plum sidebar and Mist/Paper
+  work area. Sidebar navigation: New check, Ask a question, History.
+- The reference flow is **Add document → Review → Report**. Upload accepts PDF
+  and BibTeX; Paste text supports drafts plus reference lists. The question
+  flow is **Question → Review → Answer**.
+- Review is a separate in-page step, not a modal. It shows actual selected-file
+  metadata or entered text, with Edit input/Back controls. Entered drafts survive
+  navigation between check/question/history views during the current tab session.
+- Empty input disables review. Validate type, zero-length files, PDF 20 MB,
+  BibTeX 2 MB, text 60,000 characters, and questions 500 characters.
+- Report/answer actions remain unavailable while live checking is unconnected.
+  Never show simulated progress, sample verdicts, fake history, or trust scores.
+- Detailed method/principles/hero sections were removed. Help is a short dialog;
+  context is limited to the three included checks and a future report placeholder.
+- Mobile uses a Sheet menu, a single-column input/review layout, and focus
+  transfer to the new view heading. Keyboard tab controls, disabled states,
+  Escape dismissal, and reduced-motion behavior remain required.
+- The public preview stores input only in tab memory; nothing is uploaded or
+  persisted. Real auth, uploads, reports, and API connections remain future
+  milestones, not completed by this visual change.
 
-This is a frontend preview, not completion of M5 or the backend milestones.
-Live checking is explicitly labelled unavailable. Review dialogs never imply
-that an input has been uploaded, queued, verified, or saved to a server. The
-authenticated dashboard/report routes below remain the future product contract.
+The authenticated routes and DB/API contracts below remain the future product
+contract. The current public shell does not expose those protected routes.
 
 ## 1. Sitemap & routes
 

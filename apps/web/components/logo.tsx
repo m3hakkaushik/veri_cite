@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { SVGProps } from "react";
+import type { MouseEventHandler, SVGProps } from "react";
 
 export function LogoMark(props: SVGProps<SVGSVGElement>) {
   return (
@@ -18,10 +18,13 @@ export function LogoMark(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function Logo() {
+export function Logo({
+  onClick,
+}: { onClick?: MouseEventHandler<HTMLAnchorElement> } = {}) {
   return (
     <Link
       href="/"
+      onClick={onClick}
       aria-label="VeriCite home"
       className="inline-flex items-center gap-2.5"
     >

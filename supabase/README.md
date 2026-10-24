@@ -12,6 +12,11 @@ The RLS test inserts synthetic data inside a transaction, switches between
 synthetic JWT subjects and anonymous/backend roles, asserts isolation, and
 rolls back all fixtures.
 
+Alternatively, configure the optional `SUPABASE_DB_URL` in the worker's ignored
+`.env` and run `pnpm check:hosted`. It uses the same SQL, requires existing
+migrations and an admin/session-pooler connection, connects with TLS, and never
+prints the connection string. This command does not apply schema changes.
+
 For offline verification from the repository root:
 
 ```sh

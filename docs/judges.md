@@ -75,9 +75,9 @@ VeriCite helps people inspect a citation’s promise—with the evidence attache
 | Moment | Action | What the judge should understand |
 |---|---|---|
 | User journey | Open the workspace; load the example draft | PDF, BibTeX, text, and questions have a clear entry point |
-| How it works | Switch between the method tabs | Search, Fetch, and Agent have distinct roles |
+| How it works | Open the brief “How it works” help | Search, Fetch, and Agent have distinct roles |
 | Evidence rule | Point to “No quote, no supported verdict” | The design requires inspectable evidence |
-| Current build | Open draft review | This is currently an input preview; it must not be described as a completed live check |
+| Current build | Advance from input to Review | This is currently an input preview; it must not be described as a completed live check |
 
 **Once the live pipeline is verified:** replace the preview walkthrough with a
 real run, expand its evidence, and export its actual corrected BibTeX. Update

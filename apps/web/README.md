@@ -16,8 +16,7 @@ Brand tokens live in `app/globals.css`; Inter and IBM Plex Mono are loaded
 through `next/font/google` and served locally by Next.js.
 
 The public page includes a local Document/Paste text/Question workspace,
-accessible review dialogs, an interactive verification-method explorer, and
-mobile navigation. Input stays in memory in the current tab; the preview
+a separate review step, concise check explanations, and mobile sidebar navigation. Input stays in memory in the current tab; the preview
 performs no uploads or live verification. Refreshing clears entered drafts.
 
 Copy `.env.example` to `.env.local` before the integrations milestone. Only

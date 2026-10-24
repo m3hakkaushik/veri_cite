@@ -81,6 +81,17 @@ Hosted database/RLS checks and live TinyFish/Gemini smoke checks require real
 configuration. Mark them pending until executed; never substitute simulated
 results for live verification.
 
+Use `pnpm check:setup` to list missing setting names without printing values.
+Exit code 2 means configuration is incomplete; a successful presence check is
+not a live service/authentication test.
+
+After applying the migrations, optionally set `SUPABASE_DB_URL` in the ignored
+worker `.env` to the hosted admin/session-pooler connection string and run
+`pnpm check:hosted`. This executes the readiness and transaction-scoped RLS SQL
+against that hosted database using TLS, then rolls back fixture data. It does
+not apply migrations. The connection string is never printed. The runtime
+worker does not require this admin connection or its development-only driver.
+
 `pnpm test:db` uses an in-memory PostgreSQL engine with test-only Supabase
 interfaces, actual migrations, and actual RLS execution. It needs no Docker,
 network service, or credentials. See [the database setup guide](../supabase/README.md)

@@ -11,9 +11,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VeriCite — Check the promise, live.",
+  title: "VeriCite — Reference check",
   description:
-    "Every citation and claim, verified against the live web — with the evidence attached. Built on TinyFish by Team Savencia.",
+    "A citation-checking workspace with source evidence and clear verdicts.",
 };
 
 export default function RootLayout({
