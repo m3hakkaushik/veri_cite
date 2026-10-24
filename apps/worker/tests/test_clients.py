@@ -164,7 +164,10 @@ async def test_hmac_rejects_missing_tampered_expired_signatures(settings):
         ).hexdigest()
         return {"X-VeriCite-Timestamp": timestamp, "X-VeriCite-Signature": signature}
 
-    with patch("app.security.get_settings", return_value=settings):
+    with (
+        patch("app.security.get_settings", return_value=settings),
+        patch("app.main.enqueue_run", new=AsyncMock()),
+    ):
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=app), base_url="http://worker"
         ) as client:

@@ -81,7 +81,8 @@ composite    = 0.60*title + 0.25*author + 0.10*year + 0.05*venue
 
 | Condition | Existence verdict |
 |-----------|-------------------|
-| `title ≥ 0.90` and `composite ≥ 0.85` | `found` |
+| `title ≥ 0.90` and `composite ≥ 0.85`, with no conflicting known metadata | `found` |
+| A qualifying candidate has a different known year, author, venue or title | `metadata_mismatch` (even when composite passes) |
 | `title ≥ 0.90` and `composite < 0.85` | `metadata_mismatch` (field diffs: authors/year/venue) |
 | `0.75 ≤ title < 0.90` and `author_score ≥ 0.67` | `metadata_mismatch` (title differs) |
 | else, after the web fallback with `SCHOLARLY_DOMAINS` (same scoring on page titles) | `not_found` |

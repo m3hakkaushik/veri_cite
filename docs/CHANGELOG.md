@@ -1,5 +1,28 @@
 # Build changelog
 
+## 2026-10-24 — M4 live existence pipeline verified
+
+- Added deterministic normalization, venue aliases, matching thresholds,
+  canonical cache, metadata diffs, identifier resolution, roll-up and score.
+  A wrong known year always needs review even if the composite score passes;
+  doc 08 now reflects this PRD acceptance rule. The live API's truncated
+  `Advances in neural …` venue is recognized as NeurIPS rather than flagged.
+- Added asynchronous, idempotent run dispatch and a bounded concurrent pipeline
+  for private stored BibTeX/PDF and pasted text. Citations, claims, evidence,
+  per-row state, atomic progress, final counts and usage live in Supabase.
+  Only the existence phase is connected at M4; linked claims remain
+  `unverifiable` and integrity `unknown`, stated in the run stage detail.
+- **PASS** 30 worker tests and real signed storage-to-run smoke: actual paper
+  → verified, invalid arXiv → not_found, wrong year → needs_review. Each has
+  linked evidence with a source URL. Checked count is 3 and score is 33.
+  The successful warm run reused two real canonical cache records and made
+  one Fetch call; the prior cold run exposed and led to the venue alias fix.
+- Smoke runs are private under a synthetic test owner, contain actual provider
+  verdicts, and are not public samples. No verification results were invented.
+- Empty or all-error runs have no trust score (`null`), avoiding a misleading
+  score with no completed checks. Support/integrity/answer/export and the live
+  web report remain later milestones; no production acceptance is claimed.
+
 ## 2026-10-24 — Hosted database verified; existing Clerk app and worker clients
 
 - Kept the current repository and existing Clerk application. Linked it with

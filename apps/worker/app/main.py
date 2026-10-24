@@ -1,14 +1,23 @@
 """VeriCite worker entrypoint. Hosted Supabase and Gemini; no local services."""
 
+from contextlib import asynccontextmanager
 from typing import Literal
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from app.engine.orchestrator import close_runtime, enqueue_run
 from app.security import verify_signature
 
-app = FastAPI(title="VeriCite worker", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    await close_runtime()
+
+
+app = FastAPI(title="VeriCite worker", version="0.1.0", lifespan=lifespan)
 
 
 class Health(BaseModel):
@@ -37,8 +46,7 @@ async def api_error(request: Request, error: HTTPException):
     "/internal/runs/{run_id}/start", status_code=202, dependencies=[Depends(verify_signature)]
 )
 async def start_run(run_id: str):
-    # M2 transport stub. M4 replaces this handler with the idempotent orchestrator.
-    # This endpoint is not connected to the web's Start check button yet.
+    await enqueue_run(run_id)
     return {"accepted": True}
 
 
