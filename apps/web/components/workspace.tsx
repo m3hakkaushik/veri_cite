@@ -224,12 +224,7 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
   const navigation = (
     <>
       <div className="desk-brand">
-        <Logo
-          onClick={(event) => {
-            event.preventDefault();
-            navigate("check");
-          }}
-        />
+        <Logo />
       </div>
       <span className="desk-nav-label">WORKSPACE</span>
       <nav aria-label="Workspace navigation" className="desk-nav">
@@ -303,12 +298,7 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
                 {navigation}
               </SheetContent>
             </Sheet>
-            <Logo
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("check");
-              }}
-            />
+            <Logo />
           </div>
           <div className="desk-breadcrumb">
             <span>Workspace</span>

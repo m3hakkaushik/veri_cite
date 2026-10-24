@@ -33,7 +33,12 @@ def venue_alias(text: str | None) -> str:
 
 
 def lastnames(authors: list[str]) -> set[str]:
-    return {norm(a.split(",")[0] if "," in a else a.split()[-1]) for a in authors[:3] if a.strip()}
+    names = []
+    for author in authors:
+        name = re.sub(r"\bet\.?\s+al\.?[\s,]*$", "", author, flags=re.I).strip(" ,")
+        if name and norm(name) not in {"and others", "others"}:
+            names.append(name)
+    return {norm(a.split(",")[0] if "," in a else a.split()[-1]) for a in names[:3]}
 
 
 def score(ref: ParsedRef, hit: PaperHit) -> dict[str, float]:

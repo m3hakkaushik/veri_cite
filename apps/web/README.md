@@ -15,7 +15,7 @@ local environments. Keep the existing Clerk application; do not run `init`.
 Only `NEXT_PUBLIC_` settings may reach the browser. Database service credentials
 and worker signing secrets stay in server-only modules.
 
-The workspace at <http://localhost:3000> supports PDF/BibTeX/text input, review,
+The landing page at <http://localhost:3000> leads to `/app/new`, which supports PDF/BibTeX/text input, review,
 signed uploads and live job creation. `/app/runs/[id]` reads stored results and
 updates via Realtime with a polling fallback. History is available from the
 sidebar. Current verification coverage is existence only; support, integrity,

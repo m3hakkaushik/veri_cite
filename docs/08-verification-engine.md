@@ -75,6 +75,9 @@ year_score   = 1.0 if |Δ| == 0, 0.7 if |Δ| == 1 (preprint vs proceedings), 0 o
 venue_score  = fuzz.token_set_ratio(norm(venue_alias(ref.venue)), norm(venue_alias(c.venue))) / 100 (1.0 if missing)
 composite    = 0.60*title + 0.25*author + 0.10*year + 0.05*venue
 ```
+Author-list abbreviation markers such as `et al.` are removed before selecting
+the first three author surnames; they are not people or missing-author signals.
+
 `venue_alias` maps common abbreviations (NeurIPS ↔ NIPS ↔ Advances in Neural Information Processing Systems, ICML, ICLR, ACL, EMNLP, CVPR, …).
 
 4. Decide with the best candidate:

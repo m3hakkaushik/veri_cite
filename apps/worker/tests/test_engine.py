@@ -53,3 +53,24 @@ def test_score_excludes_errors_and_empty_is_unscored():
     assert summarize(["verified"] * 33 + ["not_found"] * 5 + ["error"] * 2)[1] == 87
     assert summarize(["verified", "partially_verified"])[1] == 75
     assert summarize([])[1] is None
+
+
+@pytest.mark.parametrize(
+    "authors", [["Vaswani, A.", "et al."], ["Vaswani et al."], ["Vaswani, A. et al."]]
+)
+def test_author_abbreviation_is_not_a_person(authors):
+    ref = ParsedRef(
+        idx=1,
+        raw="Vaswani et al.",
+        title="Attention Is All You Need",
+        authors=authors,
+        year=2017,
+    )
+    hit = PaperHit(
+        title=ref.title,
+        authors=["A Vaswani", "N Shazeer", "N Parmar…"],
+        year=2017,
+        url="https://arxiv.org/abs/1706.03762",
+    )
+    assert score(ref, hit)["author"] == 1
+    assert field_diffs(ref, hit) == []

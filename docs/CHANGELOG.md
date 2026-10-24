@@ -1,5 +1,31 @@
 # Build changelog
 
+## 2026-10-24 — Public landing redesign and real-run author matching fix
+
+- Rebuilt `/` as a distinct editorial landing page: oversized brand typography,
+  an interactive paper-style citation/source comparison, a short process strip,
+  a clear live/next/planned coverage ledger, and direct workspace entry points.
+  Kept `/app/new` as the working application; workspace logos return to the
+  landing page. No new app, dependency, stock imagery, or marketing statistics.
+- The comparison shows only public paper metadata from an actual controlled
+  test, linked to its stored evidence ID and source URL. No private user-run
+  content or invented verdict is used as a public landing illustration.
+- The supplied signed-in report completed in hosted storage with its actual
+  citation and evidence. Found a false authors mismatch: Gemini extracted
+  `et al.` as an author. The matcher now removes standalone/trailing abbreviation
+  markers before surname scoring. Three regression cases cover the variants.
+- Corrected the affected completed report transactionally using its existing
+  matched source metadata. Existence is `found`, support remains `unverifiable`,
+  overall status is `partially_verified`, and score is 50. This does not claim
+  the linked sentence has been supported; no new source/quote was invented.
+- **PASS** 33 worker tests, Ruff, web lint/types/build, click/arrow-key source
+  comparison, in-page navigation, and desktop/375px visual checks.
+  **Lighthouse landing accessibility: 100/100**, no failed audits/runtime error.
+- The signed-in URL proves run creation and persisted completion. The user did
+  not explicitly confirm Realtime delivery or refresh behavior, so those M5
+  checks remain pending. This user-authorized landing work does not mark M6
+  support checking or production deployment complete.
+
 ## 2026-10-24 — M5 web report flow implemented; signed-in walkthrough pending
 
 - Connected Start check to authenticated signed uploads, owner-scoped run

@@ -4,9 +4,14 @@ Brand tokens: [11-brand-guidelines.md](11-brand-guidelines.md). Reference mock-u
 
 ## 0. Current frontend — workspace and stored reports (24 October 2026)
 
-The user's workspace redesign supersedes the older marketing landing below.
+The user's latest request restores a dedicated public landing page. Its concise
+editorial layout supersedes the older landing composition below.
 
-- `/` and authenticated `/app/new` open the focused Plum/Mist workspace.
+- `/` now presents the typographic landing page: a large headline, interactive
+  citation/source-year comparison, three-step process, four-check coverage
+  ledger, and workspace CTAs. The example uses actual evidence from a controlled
+  public-paper test, not a user document; only existence is labelled live.
+- Authenticated `/app/new` opens the focused Plum/Mist workspace.
   The reference flow is **Add document → Review → Report**, with private signed
   uploads for PDF/BibTeX, pasted text, inline validation, real upload/dispatch
   status, and a separate review step. Sign-in is required to start a run.
@@ -30,8 +35,10 @@ The user's workspace redesign supersedes the older marketing landing below.
   error/loading/empty states, and semantic status text. Report layout is checked
   at desktop and 375px with actual controlled-run data.
 
-The authenticated web walkthrough and Realtime delivery still require the M5
-Verify gate. The remaining sections describe the final product contract; later
+The user supplied a signed-in report URL whose stored run completed successfully.
+That input exposed an `et al.` matching bug, now fixed with the existing report
+corrected. Realtime delivery and refresh behavior still need explicit verification
+for the full M5 gate. The remaining sections describe the final product contract; later
 features must stay unavailable until implemented and verified.
 
 ## 1. Sitemap & routes
