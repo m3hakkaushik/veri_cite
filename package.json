@@ -11,9 +11,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev:worker": "cd apps/worker && uv run uvicorn app.main:app --reload --port 8000",
-    "lint:worker": "cd apps/worker && uv run ruff check ."
+    "lint:worker": "cd apps/worker && uv run ruff check .",
+    "test:db": "node scripts/test-database.mjs"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
+    "@electric-sql/pglite-pgvector": "0.0.12",
     "prettier": "3.9.10"
   }
 }

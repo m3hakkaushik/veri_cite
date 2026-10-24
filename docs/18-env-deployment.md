@@ -71,6 +71,7 @@ pnpm lint
 pnpm typecheck
 pnpm build
 pnpm format:check
+pnpm test:db
 pnpm lint:worker
 cd apps/worker
 uv run ruff format --check .
@@ -79,6 +80,11 @@ uv run ruff format --check .
 Hosted database/RLS checks and live TinyFish/Gemini smoke checks require real
 configuration. Mark them pending until executed; never substitute simulated
 results for live verification.
+
+`pnpm test:db` uses an in-memory PostgreSQL engine with test-only Supabase
+interfaces, actual migrations, and actual RLS execution. It needs no Docker,
+network service, or credentials. See [the database setup guide](../supabase/README.md)
+for the checks it covers and the hosted transport/auth checks it cannot cover.
 
 ## Deployment targets (M10)
 

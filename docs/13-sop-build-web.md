@@ -73,6 +73,10 @@ Accounts and keys needed (put into `.env.local` / worker `.env`, see [18](18-env
 - Tables and enums exist; `select * from runs` as anon returns 0 rows / permission-filtered.
 - Storage bucket `uploads` exists and is private.
 - Realtime publication includes `runs`, `citations`, `evidence`.
+- Offline prerequisite: `pnpm test:db` applies the migrations to an in-memory
+  PostgreSQL engine and exercises RLS/worker RPC permissions without Docker.
+  This does not replace applying the migrations or running the checks against
+  the hosted project. Keep M1 hosted verification pending until configured.
 
 ---
 

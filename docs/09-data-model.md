@@ -244,10 +244,20 @@ on conflict (id) do nothing;
 ## Status update contract (worker)
 - On each citation completion: `update citations set status, existence, support, integrity, reason, matched, field_diffs ...` then `update runs set checked_citations = checked_citations + 1, tinyfish_usage = ...` (use an RPC `increment_checked(run_id)` to avoid races).
 
+Migration `0004_worker_rpcs.sql` installs this function. Only `service_role` may
+execute it. The empty search path and qualified table name prevent object
+resolution through an untrusted schema; the function uses invoker permissions.
+
 ```sql
-create or replace function public.increment_checked(p_run uuid) returns void language sql as $$
+create or replace function public.increment_checked(p_run uuid)
+returns void language sql set search_path = '' as $$
   update public.runs set checked_citations = checked_citations + 1 where id = p_run;
 $$;
+
+-- Only the trusted backend may advance job progress. Explicitly restrict RPC
+-- execution; default function grants include PUBLIC on PostgreSQL.
+revoke all on function public.increment_checked(uuid) from public, anon, authenticated;
+grant execute on function public.increment_checked(uuid) to service_role;
 ```
 
 ## Sample data

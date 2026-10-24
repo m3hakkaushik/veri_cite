@@ -1,5 +1,40 @@
 # Build changelog
 
+## 2026-10-24 — M1 Supabase implementation; hosted verification pending
+
+- Pushed the initial project, redesigned frontend, Docker-free setup, and judge
+  pitch to `m3hakkaushik/veri_cite` on `main` (`f822f43`).
+- Added the first three SQL migrations verbatim from doc 09: all nine enums,
+  eight tables, indexes, RLS policies, private uploads bucket, and Realtime
+  publication membership.
+- Added migration 0004 for the atomic checked-citation increment, restricted
+  to `service_role`; doc 09 contains the same SQL and permission contract.
+- Added server-only service/user Supabase clients for the BFF, a memoized
+  browser client using Clerk third-party-auth session tokens, and a lazy async
+  worker client. The public preview still runs without provider keys.
+- Added transaction-scoped SQL security tests and hosted readiness assertions.
+  Synthetic fixtures roll back and never seed pretend verification outcomes.
+- Added Docker-free `pnpm test:db` with PGlite, pgvector, and pgcrypto as dev-only
+  dependencies. It executes actual PostgreSQL migrations/RLS with test-only
+  Supabase auth/storage interfaces; it is not a local Supabase deployment.
+
+### Verification
+
+- **PASS** migration/doc parity for 0001–0004 and all nine enum value lists.
+- **PASS** schema/RLS/private-bucket/publication/RPC catalog assertions.
+- **PASS** own-run reads; cross-user isolation for runs, citations, claims,
+  evidence, users, and answers; signed-in sample access; anonymous denial;
+  backend-only cache/usage access; browser run-write/RPC denial; additive
+  service-role progress increments; fixture rollback.
+- **PASS** web lint, TypeScript, production build, Prettier, and worker Ruff.
+- **PASS** revised worker `/health` with `pdf_parser:"gemini"`.
+- **PENDING** apply migrations to a real hosted Supabase project and rerun SQL
+  checks there. No Supabase/Clerk keys or project configuration were available
+  in the local app environments. Clerk JWT verification, signed-upload
+  transport, and Realtime delivery are not validated by the offline harness.
+- M1's implementation is ready; its hosted Verify gate remains pending. M2
+  provider/checker implementation has not started, following the SOP order.
+
 ## 2026-10-24 — Judge pitch and Docker-free architecture
 
 - Added `docs/judges.md`: a 390-word spoken script (roughly 2:40–2:50 at

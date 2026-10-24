@@ -72,3 +72,9 @@ Verification is not implemented yet. Copy the app `.env.example` files to
 `apps/web/.env.local` and `apps/worker/.env` and configure them locally before
 the integrations milestone. See [environment setup](docs/18-env-deployment.md)
 and the [build log](docs/CHANGELOG.md) for exact progress and remaining gates.
+
+The Supabase schema, RLS, private uploads, and Realtime migrations are in
+[`supabase/migrations`](supabase/migrations). Run `pnpm test:db` for the
+Docker-free database tests; see [hosted setup](supabase/README.md) before
+applying the SQL to your project. Server, browser, and worker clients are
+prepared, but the hosted integration is not claimed verified until configured.
