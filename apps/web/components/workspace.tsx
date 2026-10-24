@@ -40,6 +40,10 @@ import {
 } from "@/components/ui/sheet";
 import { validateDocument } from "@/lib/input-validation";
 import { AuthControls } from "@/components/auth-controls";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useSupabase } from "@/lib/supabase/client";
+import { HistoryList } from "@/components/history-list";
 
 type View = "check" | "ask" | "history";
 type Step = "input" | "review";
@@ -73,6 +77,10 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
   const [text, setText] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState("");
+  const { isSignedIn, isLoaded } = useAuth();
+  const router = useRouter();
+  const supabase = useSupabase();
   const [helpOpen, setHelpOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -137,6 +145,72 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
     else if (hasFile) setFile(null);
     else setText("");
     setError("");
+  }
+  async function startCheck() {
+    if (!isSignedIn) {
+      router.push(
+        "/sign-in?redirect_url=" +
+          encodeURIComponent(window.location.origin + "/app/new"),
+      );
+      return;
+    }
+    if (!ready || asking || busy) return;
+    setError("");
+    try {
+      let storagePath: string | undefined;
+      if (hasFile && file) {
+        setBusy("Uploading document…");
+        const contentType = file.name.toLowerCase().endsWith(".pdf")
+          ? "application/pdf"
+          : "text/x-bibtex";
+        const signedResponse = await fetch("/api/v1/uploads/sign", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            filename: file.name,
+            contentType,
+            size: file.size,
+          }),
+        });
+        const signed = await signedResponse.json();
+        if (!signedResponse.ok)
+          throw new Error(
+            signed.error?.message || "Could not prepare the upload.",
+          );
+        const { error } = await supabase.storage
+          .from("uploads")
+          .uploadToSignedUrl(signed.storagePath, signed.token, file, {
+            contentType,
+          });
+        if (error)
+          throw new Error("The upload did not finish. Please try again.");
+        storagePath = signed.storagePath;
+      }
+      setBusy("Starting your check…");
+      const response = await fetch("/api/v1/runs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          inputType: hasFile
+            ? file?.name.toLowerCase().endsWith(".pdf")
+              ? "pdf"
+              : "bib"
+            : "text",
+          title: hasFile ? file?.name : "Pasted references",
+          text: hasFile ? undefined : text,
+          storagePath,
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error?.message || "Could not start this check.");
+      router.push(`/app/runs/${result.run.id}`);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Could not start the check.",
+      );
+      setBusy("");
+    }
   }
   const heading =
     view === "history"
@@ -246,11 +320,11 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
           <AuthControls />
           <span className="desk-preview">
             <span />
-            Local preview
+            Live reference lookup
           </span>
           <button
             className="desk-icon-button topbar-help"
-            aria-label="About this preview"
+            aria-label="About reference checks"
             onClick={() => setHelpOpen(true)}
           >
             <CircleHelp size={18} />
@@ -271,7 +345,7 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
               </h1>
               <p className="desk-subtitle">
                 {view === "history"
-                  ? "Saved reports will live here."
+                  ? "Your checks, evidence, and results."
                   : step === "review"
                     ? "Check the details before you continue."
                     : asking
@@ -286,19 +360,23 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
             )}
           </div>
           {view === "history" ? (
-            <section className="desk-history">
-              <span className="history-art" aria-hidden="true">
-                <History size={37} strokeWidth={1} />
-              </span>
-              <h2>No saved reports in this preview.</h2>
-              <p>Live verification is not connected yet.</p>
-              <button
-                className="desk-primary"
-                onClick={() => navigate("check")}
-              >
-                Check references <ArrowRight size={16} />
-              </button>
-            </section>
+            isSignedIn ? (
+              <HistoryList />
+            ) : (
+              <section className="desk-history">
+                <span className="history-art" aria-hidden="true">
+                  <History size={37} strokeWidth={1} />
+                </span>
+                <h2>Sign in to see your reports.</h2>
+                <p>Your checks are saved to your account.</p>
+                <button
+                  className="desk-primary"
+                  onClick={() => navigate("check")}
+                >
+                  Check references <ArrowRight size={16} />
+                </button>
+              </section>
+            )
           ) : (
             <>
               <ol className="desk-steps" aria-label="Check progress">
@@ -578,31 +656,50 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
                       <div className="desk-connection-note">
                         <LockKeyhole size={15} />
                         <div>
-                          <strong>Live checking isn’t connected yet.</strong>
+                          <strong>
+                            {asking
+                              ? "Grounded answers are being connected."
+                              : busy || "Ready for a live reference lookup."}
+                          </strong>
                           <p>
-                            Your input is ready. You can return and edit it.
+                            {asking
+                              ? "You can keep editing this question."
+                              : "Claim support and retraction checks are next."}
                           </p>
                         </div>
                       </div>
+                      {error && (
+                        <p className="desk-error" role="alert">
+                          {error}
+                        </p>
+                      )}
                       <div className="desk-card-actions">
                         <button
                           className="desk-text-button"
                           onClick={() => setStep("input")}
+                          disabled={!!busy}
                         >
                           <ArrowLeft size={14} />
                           Back
                         </button>
                         <button
                           className="desk-primary"
-                          disabled
+                          disabled={!!busy || asking || !isLoaded || !ready}
+                          onClick={startCheck}
+                          aria-busy={!!busy}
                           aria-describedby="connection-detail"
                         >
-                          {asking ? "Find sources" : "Start check"}
+                          {asking
+                            ? "Find sources"
+                            : busy ||
+                              (isSignedIn ? "Start check" : "Sign in to check")}
                           <ArrowRight size={16} />
                         </button>
                       </div>
                       <span id="connection-detail" className="sr-only">
-                        Live verification is unavailable in this preview.
+                        {asking
+                          ? "Grounded answers are not connected yet."
+                          : "Your input will be stored and checked against live sources."}
                       </span>
                     </>
                   )}
@@ -611,7 +708,7 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
                   <section className="desk-checks-card">
                     <div className="context-card-heading">
                       <h2>
-                        {asking ? "Answer requirements" : "Checks included"}
+                        {asking ? "Answer requirements" : "Check coverage"}
                       </h2>
                       <button
                         className="desk-icon-button"
@@ -649,20 +746,23 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
                             </div>
                           </div>
                         ))
-                      : checkItems.map(({ title, detail, icon: Icon }) => (
-                          <div className="desk-check-item" key={title}>
-                            <span>
-                              <Icon size={17} strokeWidth={1.5} />
-                            </span>
-                            <div>
-                              <h3>{title}</h3>
-                              <p>{detail}</p>
+                      : checkItems.map(
+                          ({ title, detail, icon: Icon }, index) => (
+                            <div className="desk-check-item" key={title}>
+                              <span>
+                                <Icon size={17} strokeWidth={1.5} />
+                              </span>
+                              <div>
+                                <h3>{title}</h3>
+                                <p>{index === 0 ? detail : "Coming next"}</p>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ),
+                        )}
                     {!asking && (
                       <p className="desk-checks-note">
-                        Claim support needs citing text.
+                        Existence checks are live. Claim support needs citing
+                        text.
                       </p>
                     )}
                   </section>
@@ -689,7 +789,9 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
               </div>
               <div className="desk-bottom-note">
                 <LockKeyhole size={12} />
-                <span>Nothing is uploaded in this preview.</span>
+                <span>
+                  Your document is uploaded only when you start a check.
+                </span>
               </div>
             </>
           )}
@@ -724,8 +826,8 @@ export function Workspace({ initialView = "check" }: { initialView?: View }) {
             </div>
           ))}
           <p className="help-preview-note">
-            This preview supports input and review. Live checks and saved
-            reports are still being connected.
+            Live reference lookup and saved reports are connected. Claim
+            support, retraction checks, and grounded answers are the next steps.
           </p>
           <button className="desk-primary" onClick={() => setHelpOpen(false)}>
             Got it <Check size={15} />

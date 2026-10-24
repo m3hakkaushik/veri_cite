@@ -1,5 +1,41 @@
 # Build changelog
 
+## 2026-10-24 — M5 web report flow implemented; signed-in walkthrough pending
+
+- Connected Start check to authenticated signed uploads, owner-scoped run
+  creation, user upsert, HMAC worker dispatch, and the stored report route.
+  Uploaded files reserve the run UUID in their private object path. The public
+  workspace leads guests to sign-in; questions remain explicitly unavailable.
+- Added API contract types and snake/camel mappers that strip private fields
+  and raw provider payloads. Count-map enum keys remain snake_case. Added
+  boundary tests for these cases rather than changing the API contract.
+- Added user-authenticated history/pagination, detail, deletion, sample-input
+  cloning, and public health routes. Ownership is checked before service-role
+  writes; reads use Clerk third-party auth and RLS. File/size/input validation,
+  the prescribed per-process 10/hour run limit, error envelopes, and private
+  no-store responses are implemented.
+- Added a brand-token report layout with actual stored progress/counts/score,
+  TinyFish usage, filters, expandable evidence, metadata differences and source
+  links. Realtime events trigger refreshes; polling backs up disconnected
+  subscriptions. Coverage is explicitly existence-only until M6/M7.
+- The public demo reads only a real `is_sample` run. No sample has been seeded;
+  the route currently explains that state. The sample API never fabricates
+  verdicts or relabels a clone as a completed live run.
+- **PASS** lint, TypeScript, production build, API mapping tests, unsigned API
+  401, and local `/api/v1/health` → `{ok:true,worker:true}`.
+- **PASS** desktop/375px layout inspection, Flagged filter and expanded source
+  evidence using an actual controlled M4 run. All temporary preview routes
+  were removed. **Lighthouse accessibility 100/100** on that report DOM, with
+  no failed audits or runtime error; this is not a signed-in journey test.
+- **PENDING M5 Verify:** user-session upload/text → report; Realtime delivery;
+  refresh during a run; and end-user Clerk JWT integration. The user confirmed
+  sign-in and third-party configuration, but has not yet supplied the requested
+  live report URL. Hosted SQL RLS isolation already passes; browser sessions
+  have not been impersonated or created to bypass this remaining check.
+- M6 has not started, following the SOP's Verify-before-next-milestone rule.
+  Pro quota, full claim/integrity checks, fixes/export, Grounded Answer, actual
+  final sample/evaluation, and deployment remain pending.
+
 ## 2026-10-24 — M4 live existence pipeline verified
 
 - Added deterministic normalization, venue aliases, matching thresholds,

@@ -4,7 +4,7 @@
 
 VeriCite is a real-time academic cross-reference and fact-checking engine built on **TinyFish** for **HackIIITD 2026** (IIIT Delhi · Esya '26) by **Team Savencia** (K. R. Mangalam University, Gurgaon — Mehak · Nitesh).
 
-Drop in a draft, a PDF, a `.bib` file, or a question. VeriCite runs **four live checks** on every reference:
+The planned Phase 1 product accepts drafts, PDFs, BibTeX, and questions. Its four checks are:
 
 | #   | Check        | Question              | TinyFish API                       | Flags                      |
 | --- | ------------ | --------------------- | ---------------------------------- | -------------------------- |
@@ -13,16 +13,16 @@ Drop in a draft, a PDF, a `.bib` file, or a question. VeriCite runs **four live 
 | 03  | **Valid**    | Is it still valid?    | Search → Fetch → Agent             | Retracted · Corrected      |
 | 04  | **Current**  | Is it current?        | Search (`news`, `recency_minutes`) | Outdated · Disputed        |
 
-**Grounded Answer mode:** ask a question and the LLM answers _only_ from pages TinyFish fetched seconds ago, with every sentence linked to its source.
+**Planned Grounded Answer mode:** ask a question and the LLM answers _only_ from pages TinyFish fetched seconds ago, with every sentence linked to its source.
 
 ---
 
 ## Project stages
 
-| Stage       | Deliverable                                                        | Status                                                     |
-| ----------- | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **Phase 1** | Next.js web app + Python verification worker (24h hackathon build) | 🟡 M0 scaffold implemented; verification gates in progress |
-| **Phase 2** | Flutter mobile app (same backend, share-sheet + camera intake)     | ⚪ After Phase 1                                           |
+| Stage       | Deliverable                                                        | Status                                                       |
+| ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Phase 1** | Next.js web app + Python verification worker (24h hackathon build) | 🟡 M0–M4 verified; authenticated web walkthrough in progress |
+| **Phase 2** | Flutter mobile app (same backend, share-sheet + camera intake)     | ⚪ After Phase 1                                             |
 
 ## Repository layout (target)
 
@@ -50,7 +50,7 @@ no Docker or local parser/database services are required.
 
 ## Tech at a glance
 
-Next.js · TypeScript · Tailwind · shadcn/ui · Clerk · Supabase (Postgres, pgvector, Storage, Realtime) · Vercel · FastAPI · **TinyFish (Search, Fetch, Agent)** · Gemini 2.5 Flash · RapidFuzz · Flutter (Phase 2)
+Next.js · TypeScript · Tailwind · shadcn/ui · Clerk · Supabase (Postgres, pgvector, Storage, Realtime) · Vercel · FastAPI · **TinyFish (Search, Fetch, Agent)** · Gemini 3.8 Flash · RapidFuzz · Flutter (Phase 2)
 
 ## Run locally
 
@@ -67,17 +67,19 @@ pnpm dev          # http://localhost:3000
 pnpm dev:worker   # http://localhost:8000/health
 ```
 
-The branded product preview and worker health endpoint work without API keys.
-Verification is not implemented yet. Copy the app `.env.example` files to
-`apps/web/.env.local` and `apps/worker/.env` and configure them locally before
-the integrations milestone. See [environment setup](docs/18-env-deployment.md)
-and the [build log](docs/CHANGELOG.md) for exact progress and remaining gates.
+Configure the ignored web/worker env files from their `.env.example` templates.
+The frontend needs Clerk and Supabase settings; the worker needs TinyFish,
+Gemini, Supabase, and a shared signing secret. See [setup](docs/18-env-deployment.md).
 
-The Supabase schema, RLS, private uploads, and Realtime migrations are in
-[`supabase/migrations`](supabase/migrations). Run `pnpm test:db` for the
-Docker-free database tests; see [hosted setup](supabase/README.md) before
-applying the SQL to your project. Server, browser, and worker clients are
-prepared, but the hosted integration is not claimed verified until configured.
+The current build has hosted schema/RLS/storage checks, existing Clerk auth,
+live PDF/text extraction, BibTeX parsing, TinyFish existence checks, persisted
+jobs/evidence/progress, and a connected report/history UI. M5's authenticated
+web walkthrough is in progress. Claim support, integrity, fixes/exports,
+Grounded Answer, final sample, and production deployment are still pending.
+See [the build log](docs/CHANGELOG.md) for verified scope.
+
+Run `pnpm test:db` for Docker-free PostgreSQL/RLS tests. The migrations also
+passed the hosted SQL checks. See [database setup](supabase/README.md).
 
 `pnpm check:setup` lists missing configuration names without exposing values.
 `pnpm check:hosted` runs the hosted SQL checks after you configure the optional

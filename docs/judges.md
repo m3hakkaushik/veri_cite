@@ -65,8 +65,8 @@ our target is a forty-reference audit within three minutes, not a result we
 claim to have achieved yet.
 
 Caching, batched fetching, rate limits, and capped Agent calls keep the design
-feasible. Today, our interactive frontend and worker foundation are built;
-live verification is still being connected.
+feasible. Today, our parser and live reference lookup pass hosted checks;
+claim verification and deployment are next.
 
 VeriCite helps people inspect a citation’s promise—with the evidence attached.
 
@@ -77,7 +77,7 @@ VeriCite helps people inspect a citation’s promise—with the evidence attache
 | User journey | Open the workspace; load the example draft | PDF, BibTeX, text, and questions have a clear entry point |
 | How it works | Open the brief “How it works” help | Search, Fetch, and Agent have distinct roles |
 | Evidence rule | Point to “No quote, no supported verdict” | The design requires inspectable evidence |
-| Current build | Advance from input to Review | This is currently an input preview; it must not be described as a completed live check |
+| Current build | Advance from input to Review | Existence runs pass hosted smoke checks; claim auditing and the deployed journey remain pending |
 
 **Once the live pipeline is verified:** replace the preview walkthrough with a
 real run, expand its evidence, and export its actual corrected BibTeX. Update

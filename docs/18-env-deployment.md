@@ -28,8 +28,9 @@ cd apps/worker
 uv sync --frozen
 ```
 
-The frontend requires the existing Clerk application's development keys; the
-worker health endpoint can run with blank provider keys.
+The frontend requires the existing Clerk application's development keys and
+the public Supabase settings. The worker health endpoint can run with blank
+provider keys.
 Keep provider keys in the ignored local environment files, never in chat or Git.
 
 | File | Required values |

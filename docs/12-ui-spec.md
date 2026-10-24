@@ -2,37 +2,37 @@
 
 Brand tokens: [11-brand-guidelines.md](11-brand-guidelines.md). Reference mock-up: deck slide "The Trust Report" (Figure 1.0).
 
-## 0. Current frontend — focused workspace (24 October 2026)
+## 0. Current frontend — workspace and stored reports (24 October 2026)
 
-The user asked to remove the long marketing copy and give the application a
-clearer flow. This supersedes both earlier landing compositions below.
+The user's workspace redesign supersedes the older marketing landing below.
 
-- `/` opens a public, local workspace preview with a Plum sidebar and Mist/Paper
-  work area. Sidebar navigation: New check, Ask a question, History.
-- The reference flow is **Add document → Review → Report**. Upload accepts PDF
-  and BibTeX; Paste text supports drafts plus reference lists. The question
-  flow is **Question → Review → Answer**.
-- Review is a separate in-page step, not a modal. It shows actual selected-file
-  metadata or entered text, with Edit input/Back controls. Entered drafts survive
-  navigation between check/question/history views during the current tab session.
-- Empty input disables review. Validate type, zero-length files, PDF 20 MB,
-  BibTeX 2 MB, text 60,000 characters, and questions 500 characters.
-- Report/answer actions remain unavailable while live checking is unconnected.
-  Never show simulated progress, sample verdicts, fake history, or trust scores.
-- Detailed method/principles/hero sections were removed. Help is a short dialog;
-  context is limited to the three included checks and a future report placeholder.
-- Mobile uses a Sheet menu, a single-column input/review layout, and focus
-  transfer to the new view heading. Keyboard tab controls, disabled states,
-  Escape dismissal, and reduced-motion behavior remain required.
-- The public preview stores input only in tab memory; nothing is uploaded or
-  persisted. Authentication now uses the existing Clerk application: Sign in,
-  Create account, and UserButton controls, with Google/email components on
-  `/sign-in` and `/sign-up`. `/app`, `/app/new`, and `/app/ask` require a session
-  and currently render this same local workspace. Uploads, reports, and live
-  checking are still future milestones.
+- `/` and authenticated `/app/new` open the focused Plum/Mist workspace.
+  The reference flow is **Add document → Review → Report**, with private signed
+  uploads for PDF/BibTeX, pasted text, inline validation, real upload/dispatch
+  status, and a separate review step. Sign-in is required to start a run.
+- `/app` includes saved history; `/app?view=history` opens it directly.
+  Reports link to `/app/runs/[id]`. Clerk's existing application handles
+  Google/email sign-in, sign-up, and the profile control.
+- The report reads persisted Supabase data, subscribes to row changes, and
+  polls when Realtime is unavailable. It shows actual progress, trust score,
+  TinyFish counts, filters, metadata differences, and expandable source evidence.
+  Refreshing reads the same stored run. No illustrative verdicts are seeded.
+- **Current coverage is existence only**, stated on the report. Claim support,
+  integrity, fixes/exports, and Grounded Answer remain later milestones.
+  Question input/review is available; its search action remains disabled.
+- `/demo` renders only an actual completed `is_sample` report. Until M10 seeds
+  one, it shows an honest unavailable state. The sample endpoint clones actual
+  input and starts a new run; it never clones verdicts into a claimed live check.
+- Local drafts survive sidebar navigation within a tab, but not refresh/login.
+  A file stays local until Start check. Real uploads and submitted text are
+  persisted under the authenticated owner.
+- Keep the brand tokens, mobile Sheet, keyboard/focus behavior, reduced motion,
+  error/loading/empty states, and semantic status text. Report layout is checked
+  at desktop and 375px with actual controlled-run data.
 
-The remaining report, history, and DB/API behavior below remains the product
-contract; the new auth routes do not imply the verification pipeline is live.
+The authenticated web walkthrough and Realtime delivery still require the M5
+Verify gate. The remaining sections describe the final product contract; later
+features must stay unavailable until implemented and verified.
 
 ## 1. Sitemap & routes
 

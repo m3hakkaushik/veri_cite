@@ -15,7 +15,8 @@
     "test:db": "node scripts/test-database.mjs",
     "check:setup": "cd apps/worker && uv run python scripts/check_setup.py",
     "check:hosted": "cd apps/worker && uv run python scripts/check_setup.py --database",
-    "test:inputs": "node scripts/test-inputs.mjs"
+    "test:inputs": "node scripts/test-inputs.mjs",
+    "test:contracts": "node scripts/test-contracts.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.11",
