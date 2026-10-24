@@ -39,6 +39,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { validateDocument } from "@/lib/input-validation";
+import { AuthControls } from "@/components/auth-controls";
 
 type View = "check" | "ask" | "history";
 type Step = "input" | "review";
@@ -64,8 +65,8 @@ const checkItems = [
   },
 ];
 
-export function Workspace() {
-  const [view, setView] = useState<View>("check");
+export function Workspace({ initialView = "check" }: { initialView?: View }) {
+  const [view, setView] = useState<View>(initialView);
   const [step, setStep] = useState<Step>("input");
   const [inputMode, setInputMode] = useState("upload");
   const [file, setFile] = useState<File | null>(null);
@@ -242,6 +243,7 @@ export function Workspace() {
               {navItems.find((item) => item.view === view)?.label}
             </strong>
           </div>
+          <AuthControls />
           <span className="desk-preview">
             <span />
             Local preview

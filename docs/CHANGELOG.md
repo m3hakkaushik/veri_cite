@@ -1,5 +1,61 @@
 # Build changelog
 
+## 2026-10-24 — Hosted database verified; existing Clerk app and worker clients
+
+- Kept the current repository and existing Clerk application. Linked it with
+  the Clerk CLI and restored its development keys locally; no `init`, new
+  project/application, or test-user creation. Added Google/email auth pages,
+  visible sign-in/up/profile controls, Core 3 shadcn styling, and protected
+  workspace routes. Each page authenticates at the resource; Next.js 16 proxy
+  redirects are supplementary. The user reports successful first sign-in.
+- User confirmed the Supabase third-party Clerk connection. CLI domain lookup
+  confirms the configured development frontend API domain. End-user JWT and
+  Realtime delivery still need a live report to exercise them.
+- Normalized the supplied Supabase REST URL to its project root and stored
+  modern publishable/server-secret keys only in ignored local env files. The
+  existing service JWT was not duplicated. No values are in source or this log.
+- Direct Postgres was IPv6-only and unreachable from this host. Used the
+  user's actual IPv4 session-pooler connection, inspected the empty public
+  schema, and applied migrations 0001–0004 in one committed transaction.
+- **PASS M1 hosted readiness.sql and rls.sql**, including enums/tables, RLS,
+  private uploads, publication membership, browser write denial, service-only
+  RPC, owner/cross-user/sample/anonymous reads, and rollback of test fixtures.
+- Implemented M2 settings, all DB enums, typed TinyFish results, Search/Fetch
+  batching and rate controls, bounded TTL/LRU caches, three-attempt transient
+  retries, per-attempt Supabase usage rows, and throttled per-run counters.
+  Paid Agent reservations count failures, enforce per-run/day caps, and never
+  auto-retry ambiguous dispatches. No real Agent run has been made.
+- Implemented the Gemini provider interface, Pydantic JSON validation, direct
+  PDF parts, streaming transport, and token/latency logging. No Google web
+  grounding tool is enabled; TinyFish remains the verification web layer.
+- The original 2.5 Flash returned HTTP 404. Google's current availability
+  notice restricts 2.5 to existing active users. Updated the fast model to
+  **gemini-3.8-flash**, which passed live structured-output smoke. The selected
+  **gemini-3.1-pro-preview** target returned HTTP 429 after bounded retries;
+  Pro quota/access is pending before M6 escalation can be considered verified.
+- **PASS M2 live TinyFish Search** (Attention Is All You Need candidate) and
+  **Fetch** (arXiv text contains Transformer), with actual `api_usage` rows.
+- **PASS M2 worker signing**: real localhost unsigned POST gives 401; signed
+  POST gives 202. Start is a documented M2 transport stub, not a working job.
+  Ask/export stubs return explicit 501 responses and are not connected to UI.
+- Eight client/security tests pass, plus web lint/types/build, input boundary
+  tests, offline SQL tests, and formatting. Browser sign-in/up controls and
+  protected-route redirection were inspected; no account was impersonated.
+
+### M3 verified with controlled fixtures
+
+- Added BibTeX v2 extraction with LaTeX decoding and original entries retained;
+  identifier checks; structured PDF/text extraction; linked-claim validation,
+  verbatim text checks, and per-citation claim caps.
+- Added controlled parser fixtures with 12 references and claims for [1]/[12].
+  These are test inputs, not scientific findings or seeded verification results.
+  All 21 offline worker tests pass. **PASS live PDF and text extraction**:
+  exactly 12 references, claims linked to [1]/[12], invalid identifier preserved.
+  Inspected the rendered PDF for legibility and complete content. The original
+  final-demo assets were absent, so this controlled fixture establishes the
+  parsing gate; final demo/evaluation acceptance is still pending. The web
+  still does not submit live verification jobs.
+
 ## 2026-10-24 — Focused frontend flow and hosted-check tooling
 
 - Stored the user-supplied TinyFish credential only in `apps/worker/.env`, with

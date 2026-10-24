@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "7.9.19",
+    "@clerk/ui": "1.41.1",
     "@supabase/supabase-js": "2.118.0",
     "class-variance-authority": "0.7.1",
     "cn": "0.5.0",

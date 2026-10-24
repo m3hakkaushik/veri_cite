@@ -1,0 +1,19 @@
+Citation parsing fixture
+
+The Transformer uses attention mechanisms [1].
+A synthetic system reduces error by 40% [12].
+This controlled document tests extraction. It reports no measured verification results.
+
+References
+[1] Vaswani, A. et al. (2017). Attention Is All You Need. NeurIPS. arXiv:1706.03762.
+[2] Example, A. (2022). Fixture Paper 02. Test Proceedings.
+[3] Example, A. (2020). Fixture Paper 03. Test Proceedings.
+[4] Example, A. (2021). Fixture Paper 04. Test Proceedings.
+[5] Example, A. (2022). Fixture Paper 05. Test Proceedings.
+[6] Example, A. (2020). Fixture Paper 06. Test Proceedings.
+[7] Example, A. (2021). Fixture Paper 07. Test Proceedings.
+[8] Example, A. (2022). Fixture Paper 08. Test Proceedings.
+[9] Example, A. (2020). Fixture Paper 09. Test Proceedings.
+[10] Example, A. (2021). Fixture Paper 10. Test Proceedings.
+[11] Example, A. (2022). Fixture Paper 11. Test Proceedings.
+[12] Mehta, A. and Chen, B. (2022). Graph Priors for Recall. Test Proceedings. arXiv:2305.XXXX.

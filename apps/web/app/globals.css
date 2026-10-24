@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@clerk/ui/themes/shadcn.css";
 
 @theme {
   --color-mist: #d8eaf7;
@@ -1485,5 +1486,66 @@ button:disabled {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+.desk-auth-controls {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+}
+.desk-sign-in {
+  color: var(--color-plum-muted);
+}
+.desk-create-account {
+  padding: 8px 11px;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--color-paper);
+}
+.desk-auth-controls + .desk-preview {
+  margin-left: 0;
+}
+.auth-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 35px 20px;
+}
+
+.auth-screen .cl-cardBox {
+  box-shadow: 0 1px 2px rgb(74 39 48 / 8%);
+  border: 1px solid var(--border);
+}
+.auth-screen .cl-card,
+.auth-screen .cl-socialButtonsBlockButton,
+.auth-screen .cl-formButtonPrimary {
+  box-shadow: none;
+}
+.auth-screen .cl-formFieldInput {
+  background: var(--color-linen);
+}
+.auth-brand {
+  color: var(--color-plum);
+}
+.auth-loading {
+  font-size: 13px;
+  color: var(--color-plum-muted);
+}
+@media (max-width: 700px) {
+  .desk-auth-controls {
+    gap: 9px;
+    font-size: 10px;
+  }
+  .desk-create-account {
+    padding: 7px 8px;
+  }
+  .desk-auth-controls + .desk-preview {
+    display: none;
   }
 }

@@ -110,7 +110,12 @@ Accounts and keys needed (put into `.env.local` / worker `.env`, see [18](18-env
 
 **Verify**
 - `uv run pytest -k parsing` green.
-- Demo PDF → exact expected reference count and ≥ 1 claim for refs [1], [12].
+- Controlled `apps/worker/tests/fixtures/document.pdf` → exactly 12 references
+  and ≥ 1 claim for refs [1], [12]; the placeholder arXiv ID is preserved.
+  `uv run python scripts/smoke_parsing.py` repeats this with both PDF and text.
+  Original final-demo assets were absent; repeat extraction against the actual
+  demo paper when it is assembled before M10. A parser fixture is not a scored
+  demo result or a substitute for the final Phase 1 acceptance test.
 
 ---
 
@@ -135,7 +140,7 @@ Accounts and keys needed (put into `.env.local` / worker `.env`, see [18](18-env
 ## M5 — Web: auth, shell, new check, live report
 
 **Steps**
-1. Clerk: wrap `app/layout.tsx` in `<ClerkProvider>`; `middleware.ts` with `clerkMiddleware()` protecting `/app(.*)` and `/api/v1/(?!health|share).*`; sign-in/up pages.
+1. Clerk: place `<ClerkProvider>` inside `body` in `app/layout.tsx`; use Next.js 16 `proxy.ts` with `clerkMiddleware()` and local sign-in/up URLs. Authenticate each protected page with `await auth.protect()` and each API handler before data access; API failures return the doc 10 JSON `401`. Proxy redirects are an early UX optimization, not the resource's only authorization check. Wrap auth-dependent pages in Suspense/loading boundaries. Preserve the existing Clerk application and SDK generation; do not run `init` or create another app. See the [current Clerk protection guide](https://clerk.com/docs/guides/development/upgrading/upgrade-guides/migrate-from-create-route-matcher).
 2. `lib/supabase/client.ts`: `createClient(URL, ANON, { accessToken: async () => (await clerk.session?.getToken()) ?? null })` inside a `useSupabase()` hook.
 3. `lib/contracts.ts` (types from [10](10-api-spec.md#shared-types-typescript-appsweblibcontractsts)) + Zod schemas + `toApi` mappers.
 4. `lib/worker.ts`: `callWorker(path, body)` that signs with HMAC (`crypto.createHmac`).

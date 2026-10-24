@@ -26,7 +26,7 @@ LLMs answer from frozen training data, and nothing checks their references again
 | Database / storage / realtime | **Supabase** (Postgres + pgvector, Storage for uploads, Realtime for live progress) |
 | Verification engine | **Python FastAPI worker** (`apps/worker`) using the **TinyFish Python SDK** (`AsyncTinyFish`), hosted on **Railway** (fallback: GCP Cloud Run with CPU always allocated) |
 | Web access | **TinyFish Search, Fetch, Agent** — nothing else for verification |
-| LLM | **Gemini 2.5 Flash** default (claim extraction, judge, grounded answers); **Gemini 2.5 Pro** escalation for low-confidence judgements. Behind a provider interface |
+| LLM | **Gemini 3.8 Flash** default (claim extraction, judge, grounded answers); **Gemini 3.1 Pro Preview** escalation for low-confidence judgements. Behind a provider interface |
 | Parsing | `.bib` → `bibtexparser`; PDF → **Gemini direct PDF extraction**; hosted **Supabase Storage** for uploads (no Docker); plain text → Gemini |
 | Fuzzy matching | **RapidFuzz** |
 | Jobs | MVP: FastAPI background tasks + asyncio semaphore/rate limiter, progress written to Supabase. Scale path: Redis queue + stateless workers |

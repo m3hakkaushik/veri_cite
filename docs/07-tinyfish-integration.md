@@ -124,6 +124,29 @@ Every method MUST:
 5. Return typed Pydantic objects; never leak raw SDK objects into checkers.
 6. Store the raw JSON of evidence-producing calls in `evidence.raw` (truncated to 20 KB).
 
+### Implemented boundary decisions (24 October 2026)
+
+- The gateway caches unverified Search candidate sets in a bounded process-local
+  TTL/LRU cache. Only the Exists checker may store matched canonical metadata
+  in `reference_cache`; a first search hit is never assumed to be canonical.
+  Fetch text stays in memory for 24 hours. M7 persists classified integrity
+  results by canonical key and checks that shared cache before escalation.
+- Usage rows record each actual attempt, including errors; cache hits have
+  `units=0`. Fetch units count URLs, while the run meter counts HTTP attempts.
+  Run counters refresh at most every two seconds; the orchestrator must call
+  `usage.flush(run_id, force=True)` before finalizing a run.
+- Search/Fetch retry transient failures three times, with SDK internal retries
+  disabled. HTTP 402/401/403 are never retried. Paid Agent requests reserve a
+  persisted attempt against both caps before dispatch and **do not auto-retry**:
+  a timeout can mean the original billed request is still running. This
+  intentionally supersedes the blanket retry rule for Agent only. Agent is
+  called only by `IntegrityChecker.escalate()` in M7, never by smoke scripts.
+- The MVP uses one worker process/instance. Its Agent lock plus persisted usage
+  protects concurrent jobs and survives restarts. Multiple worker instances
+  require an atomic database budget reservation before horizontal scaling.
+- The SDK has `AgentConfig.max_steps`, but current TinyFish docs mark it as
+  beta-gated (non-beta calls return 403). No unverified step override is sent.
+
 ## 6. Showing TinyFish to the judges (UI)
 - Every evidence item carries a badge: `Search API`, `Fetch API`, or `Agent API` (styled like the deck's "Engine" slide).
 - Run header shows a **TinyFish meter**: `Search 41 · Fetch 5 · Agent 2 · Cache hits 12`.

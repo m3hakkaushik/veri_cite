@@ -2,6 +2,7 @@ packages:
   - apps/web
 
 allowBuilds:
+  core-js: false
   unrs-resolver: true
 
 saveExact: true

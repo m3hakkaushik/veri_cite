@@ -25,11 +25,14 @@ clearer flow. This supersedes both earlier landing compositions below.
   transfer to the new view heading. Keyboard tab controls, disabled states,
   Escape dismissal, and reduced-motion behavior remain required.
 - The public preview stores input only in tab memory; nothing is uploaded or
-  persisted. Real auth, uploads, reports, and API connections remain future
-  milestones, not completed by this visual change.
+  persisted. Authentication now uses the existing Clerk application: Sign in,
+  Create account, and UserButton controls, with Google/email components on
+  `/sign-in` and `/sign-up`. `/app`, `/app/new`, and `/app/ask` require a session
+  and currently render this same local workspace. Uploads, reports, and live
+  checking are still future milestones.
 
-The authenticated routes and DB/API contracts below remain the future product
-contract. The current public shell does not expose those protected routes.
+The remaining report, history, and DB/API behavior below remains the product
+contract; the new auth routes do not imply the verification pipeline is live.
 
 ## 1. Sitemap & routes
 
