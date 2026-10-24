@@ -1,0 +1,19 @@
+{
+  "name": "vericite",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "typecheck": "pnpm --filter web typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "dev:worker": "cd apps/worker && uv run uvicorn app.main:app --reload --port 8000",
+    "lint:worker": "cd apps/worker && uv run ruff check ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.10"
+  }
+}

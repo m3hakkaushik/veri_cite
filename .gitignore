@@ -1,0 +1,31 @@
+# Dependencies and build output
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+.vercel/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+*.tsbuildinfo
+
+# Secrets (only templates belong in version control)
+.env*
+!.env.example
+
+# Local tools and operating system
+.DS_Store
+*.log
+.idea/
+supabase/.temp/
+supabase/.branches/
+artifacts/

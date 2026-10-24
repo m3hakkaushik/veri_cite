@@ -1,0 +1,1 @@
+"""VeriCite verification worker."""
